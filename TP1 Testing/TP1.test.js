@@ -3,7 +3,9 @@ import {
     pinCode,
     calculateVolume,
     calculateCentury,
-    calculateLiters
+    calculateLiters,
+    rockPaperScissors,
+    addressValidator
     
 } from './index.js';
 
@@ -118,3 +120,94 @@ test("Corroborar que el resultado 'pueda' ser falso", () => { //No entendia la d
 });
 
 
+
+//Ejercicio 5
+test("Prueba de empate", () => {
+    expect(rockPaperScissors("piedra","piedra")).toBe("Empate");
+    });
+
+test("Verificar que el jugador 1 gane", () => {
+    expect(rockPaperScissors("piedra","tijera")).toBe("Jugador 1 gana");
+    expect(rockPaperScissors("tijera","papel")).toBe("Jugador 1 gana");
+});
+
+test("Verificar que el jugador 2 gane", () => {
+    expect(rockPaperScissors("tijera","piedra")).toBe("Jugador 2 gana");
+    expect(rockPaperScissors("papel","tijera")).toBe("Jugador 2 gana");
+});
+
+test("Corroborar que no se pueda ingresar valores distintos a piedra, papel o tijeras", () => {
+    expect(rockPaperScissors("auto","avion")).toBeFalse;
+    expect(rockPaperScissors("tijeras","avion")).toBeFalse;
+    expect(rockPaperScissors("auto","papel")).toBeFalse;
+
+})
+
+test("Corroborar que no se pueda ingresar strings vacios o con espacios", () => {
+    expect(rockPaperScissors(""," ")).toBeFalse;
+})
+
+//Ejercicio 6
+test("Corroborar que devuelva true si la direccion es valida", () => {
+    const address = {
+        street: "Avenida San Martin",
+        number: 658,
+        zip_code: 5500,
+        city: "Godoy Cruz",
+        province: "Mendoza"
+        };
+        expect(addressValidator(address)).toBeTrue
+    }
+)
+
+test("Corroborar que la direccion no sea un objeto", () => {
+    expect(addressValidator("string")).toBeFalse;
+    expect(addressValidator(123)).toBeFalse;
+})
+
+test("Corroborar que la direccion no sea null", () => {
+    expect(addressValidator(null)).toBeFalse;
+})
+
+test("Corroborar que devuelva false si falta un campo obligatorio", () => {
+    const addressWithoutStreet = {
+        number: 658,
+        zip_code: 5500,
+        city: "Godoy Cruz",
+        province: "Mendoza"
+        };
+    expect(addressValidator(addressWithoutStreet)).toBeFalse;
+})
+
+test("Corroborar si hay un tipo de dato erroneo en un campo", () => {
+    const wrongAddress = {
+        street: 78541,
+        number: 658,
+        zip_code: 5500,
+        city: "Godoy Cruz",
+        province: "Mendoza"
+        };
+    expect(addressValidator(wrongAddress)).toBeFalse;
+})
+
+test("Corroborar si un campo obligatorio contiene espacios", () => {
+    const wrongAddress = {
+        street: "Avenida San Martin",
+        number: "   ",
+        zip_code: 5500,
+        city: "Godoy Cruz",
+        province: "Mendoza"
+        };
+    expect(addressValidator(wrongAddress)).toBeFalse;
+})
+
+test("Corroborar si un campo obligatorio esta vacio", () => {
+    const wrongAddress = {
+        street: "Avenida San Martin",
+        number: 658,
+        zip_code: 5500,
+        city: "",
+        province: "Mendoza"
+        };
+    expect(addressValidator(wrongAddress)).toBeFalse;
+})
